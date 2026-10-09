@@ -1,9 +1,19 @@
 import SwiftUI
+import Supabase
 
 struct ProfilePage: View {
     @Binding var isLoggedIn: Bool
     @Environment(\.dismiss) private var dismiss
     @State private var showLogoutAlert = false
+    
+    func logout() async {
+        do {
+            try await supabase.auth.signOut()
+            dismiss()
+        } catch {
+            print("Logout error: \(error.localizedDescription)")
+        }
+    }
     
     var body: some View {
         VStack {
@@ -54,8 +64,9 @@ struct ProfilePage: View {
             .alert("Logout Confirmation", isPresented: $showLogoutAlert) {
                 Button("Cancel", role: .cancel) { }
                 Button("Log Out", role: .destructive) {
-                    dismiss()
-                    isLoggedIn = false
+                    Task {
+                        await logout()
+                    }
                 }
             } message: {
                 Text("Do you want logout?")

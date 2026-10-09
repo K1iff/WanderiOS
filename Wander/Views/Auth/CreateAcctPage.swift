@@ -1,4 +1,13 @@
 import SwiftUI
+import Supabase
+
+struct UserProfile: Codable {
+    let id: UUID
+    let full_name: String
+    let birthdate: String
+    let sex: String
+    let location: String
+}
 
 struct CreateAcctPage: View {
     @Environment(\.dismiss) private var dismiss
@@ -12,7 +21,44 @@ struct CreateAcctPage: View {
     @State private var confirmPassword = ""
     @State private var agreeToTerms = false
     
+    @State private var isLoading = false
+    @State private var errorMessage = ""
+    @State private var showError = false
+    
     let sexOptions = ["Select", "Male", "Female", "Prefer not to say"]
+    
+    func createAccount() async {
+        if password != confirmPassword {
+            errorMessage = "Passwords do not match."
+            showError = true
+            return
+        }
+        
+        isLoading = true
+        do {
+            let response = try await supabase.auth.signUp(email: email, password: password)
+            let user = response.user
+            
+            let formatter = DateFormatter()
+            formatter.dateFormat = "yyyy-MM-dd"
+            let dateString = formatter.string(from: birthdate)
+            
+            let profile = UserProfile(
+                id: user.id,
+                full_name: fullName,
+                birthdate: dateString,
+                sex: sex,
+                location: location
+            )
+            
+            try await supabase.from("profiles").insert(profile).execute()
+            dismiss()
+        } catch {
+            errorMessage = error.localizedDescription
+            showError = true
+        }
+        isLoading = false
+    }
     
     var body: some View {
         VStack {
@@ -62,22 +108,39 @@ struct CreateAcctPage: View {
                 }
                 
                 Button(action: {
-                    dismiss()
+                    Task {
+                        await createAccount()
+                    }
                 }) {
-                    Text("Create")
-                        .font(.system(size: 16, weight: .bold))
-                        .foregroundColor(.white)
-                        .frame(maxWidth: .infinity)
-                        .frame(height: 50)
-                        .background(Color.orange)
-                        .cornerRadius(10)
+                    if isLoading {
+                        ProgressView()
+                            .progressViewStyle(CircularProgressViewStyle(tint: .white))
+                            .frame(maxWidth: .infinity)
+                            .frame(height: 50)
+                            .background(Color.orange)
+                            .cornerRadius(10)
+                    } else {
+                        Text("Create")
+                            .font(.system(size: 16, weight: .bold))
+                            .foregroundColor(.white)
+                            .frame(maxWidth: .infinity)
+                            .frame(height: 50)
+                            .background(Color.orange)
+                            .cornerRadius(10)
+                    }
                 }
+                .disabled(!agreeToTerms || isLoading)
             }
             .padding(.horizontal, 20)
             .padding(.bottom, 20)
         }
         .background(Color(UIColor.systemGroupedBackground))
         .navigationBarBackButtonHidden(true)
+        .alert("Error", isPresented: $showError) {
+            Button("OK", role: .cancel) { }
+        } message: {
+            Text(errorMessage)
+        }
     }
 }
 

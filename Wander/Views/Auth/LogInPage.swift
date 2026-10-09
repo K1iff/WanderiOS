@@ -1,18 +1,31 @@
 import SwiftUI
+import Supabase
 
 struct LogInPage: View {
     @Binding var isLoggedIn: Bool
     @State private var email: String = ""
     @State private var password: String = ""
+    
+    @State private var isLoading = false
     @State private var isShowAlert: Bool = false
+    @State private var alertMessage = ""
     @State var isRememberMe: Bool = false
     
-    func login() {
+    func login() async {
         if email.isEmpty || password.isEmpty {
+            alertMessage = "Email and Password must not be empty"
             isShowAlert = true
-        } else {
-            isLoggedIn = true
+            return
         }
+        
+        isLoading = true
+        do {
+            _ = try await supabase.auth.signIn(email: email, password: password)
+        } catch {
+            alertMessage = error.localizedDescription
+            isShowAlert = true
+        }
+        isLoading = false
     }
     
     var body: some View {
@@ -23,11 +36,11 @@ struct LogInPage: View {
                 .ignoresSafeArea()
                 .opacity(0.8)
             
-            VStack (alignment: .center) {
+            VStack(alignment: .center) {
                 Image("wander")
                     .resizable()
                     .frame(width: 100, height: 130)
-                HStack (spacing: 0) {
+                HStack(spacing: 0) {
                     Text("Wan")
                         .font(.system(size: 50, weight: .bold))
                         .foregroundColor(.orange)
@@ -53,15 +66,29 @@ struct LogInPage: View {
                         .foregroundColor(.white)
                         .padding(.horizontal, 50)
                     
-                    Button(action: login) {
-                        Text("Log In")
-                            .frame(maxWidth: .infinity)
-                            .padding()
-                            .foregroundColor(Color.white)
-                            .background(Color.orange)
-                            .cornerRadius(10)
+                    Button(action: {
+                        Task {
+                            await login()
+                        }
+                    }) {
+                        if isLoading {
+                            ProgressView()
+                                .progressViewStyle(CircularProgressViewStyle(tint: .white))
+                                .frame(maxWidth: .infinity)
+                                .padding()
+                                .background(Color.orange)
+                                .cornerRadius(10)
+                        } else {
+                            Text("Log In")
+                                .frame(maxWidth: .infinity)
+                                .padding()
+                                .foregroundColor(Color.white)
+                                .background(Color.orange)
+                                .cornerRadius(10)
+                        }
                     }
                     .padding(.horizontal, 40)
+                    .disabled(isLoading)
                     
                     NavigationLink {
                         CreateAcctPage()
@@ -75,8 +102,10 @@ struct LogInPage: View {
                 }
             }
         }
-        .alert("Email and Password must not be empty", isPresented: $isShowAlert) {
+        .alert("Login Failed", isPresented: $isShowAlert) {
             Button("Ok", role: .cancel) { }
+        } message: {
+            Text(alertMessage)
         }
     }
 }

@@ -1,4 +1,5 @@
 import SwiftUI
+import Supabase
 
 struct ContentView: View {
     @State private var isLoggedIn = false
@@ -15,6 +16,22 @@ struct ContentView: View {
                 }
                 .preferredColorScheme(isDarkMode ? .dark : .light)
                 .transition(.opacity)
+            }
+        }
+        .task {
+            do {
+                _ = try await supabase.auth.session
+                isLoggedIn = true
+            } catch {
+                isLoggedIn = false
+            }
+            
+            for await state in await supabase.auth.authStateChanges {
+                if state.event == .signedIn {
+                    isLoggedIn = true
+                } else if state.event == .signedOut {
+                    isLoggedIn = false
+                }
             }
         }
     }
