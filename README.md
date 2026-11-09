@@ -129,10 +129,6 @@ Contributions are welcome! Please feel free to:
 
 Please ensure your code adheres to the existing style and includes relevant tests if applicable.
 
-## ⚖️ License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
 ## 🔗 Important Links
 
 *   **Repository:** [https://github.com/K1iff/WanderiOS](https://github.com/K1iff/WanderiOS)
