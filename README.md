@@ -1,4 +1,4 @@
-# Wander-iOS 🗺️
+# Wander - iOS 🗺️
 
 A Swift-based mobile application designed to help users explore the beautiful destinations of the Philippines. This app leverages SwiftUI for its user interface and Supabase for backend services, enabling features like user authentication, destination browsing, and itinerary planning.
 
