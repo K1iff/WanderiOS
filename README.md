@@ -1,147 +1,271 @@
 # Wander - iOS 🗺️
 
-A Swift-based mobile application designed to help users explore the beautiful destinations of the Philippines. This app leverages SwiftUI for its user interface and Supabase for backend services, enabling features like user authentication, destination browsing, and itinerary planning.
+[![Swift](https://img.shields.io/badge/Swift-5.9%2B-orange.svg?style=flat&logo=swift)](https://developer.apple.com/swift/)
+[![SwiftUI](https://img.shields.io/badge/SwiftUI-3.0-blue.svg?style=flat&logo=swift)](https://developer.apple.com/xcode/swiftui/)
+[![Supabase](https://img.shields.io/badge/Supabase-Connected-green.svg?style=flat&logo=supabase)](https://supabase.com/)
+[![Xcode](https://img.shields.io/badge/Xcode-15%2B-blue.svg?style=flat&logo=xcode)](https://developer.apple.com/xcode/)
+[![Platform](https://img.shields.io/badge/Platform-iOS%2017%2B-lightgrey.svg?style=flat&logo=apple)](https://www.apple.com/ios/)
+[![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
-[![Swift](https://img.shields.io/badge/Swift-5.9-orange)](https://developer.apple.com/swift/)
-[![SwiftUI](https://img.shields.io/badge/SwiftUI-3.0-blue)](https://developer.apple.com/xcode/swiftui/)
-[![Supabase](https://img.shields.io/badge/Supabase-Connected-green)](https://supabase.com/)
+A modern Swift-based mobile application crafted with SwiftUI and Supabase to discover, explore, and plan travel itineraries across breathtaking destinations in the Philippines.
 
-## ✨ Features
+```
++-------------------------------------------------------------------------+
+|                                                                         |
+|                       [ App Screenshot / Demo UI ]                      |
+|                                                                         |
+|            Explore Destinations  *  Interactive Maps  *  Itinerary       |
+|                                                                         |
++-------------------------------------------------------------------------+
+```
 
-*   **User Authentication:** Secure sign-up and login with email and password using Supabase.
-*   **Explore Destinations:** Browse a curated list of Philippine destinations with details, images, and location.
-*   **Interactive Map:** View destination locations on an interactive map.
-*   **Itinerary Planning:** Save favorite spots and plan your trips with a day-by-day itinerary.
-*   **User Profiles:** Manage your personal information and preferences.
-*   **Dark Mode Support:** Enjoy a comfortable viewing experience with dark mode.
-*   **Travel Settings:** Customize units and currency for your travel plans.
+---
 
-## 🚀 Tech Stack
+## 2. Key Features
 
-*   **Language:** Swift
-*   **UI Framework:** SwiftUI
-*   **Backend:** Supabase
-*   **Database:** PostgreSQL (via Supabase)
-*   **Authentication:** Supabase Auth
+- **User Authentication & Session Management:**
+  - Secure account registration with full name, birthdate, sex, location, email, and password via Supabase Auth (`CreateAcctPage`).
+  - Streamlined login with credentials verification, session persistence, and real-time auth state listener (`LogInPage`, `ContentView`).
+  - Seamless logout with user confirmation alert dialog (`ProfilePage`).
 
-## 🛠️ Installation
+- **Destination Discovery & Experience Filtering:**
+  - Dynamic destination catalog fetched in real-time from Supabase database (`ExplorePage`).
+  - Visual cards with destination imagery, title, and location overview (`SpotCard`).
+  - Experience filter modal drawer supporting categories including *Culture & Heritage*, *Nature & Outdoors*, *Foods & Drink*, *Nightlife*, *Arts & Entertainment*, and *Wellness* (`FilterExperience`).
 
-1.  **Prerequisites:**
-    *   Xcode 15 or later
-    *   macOS 13.0 or later
-    *   Swift 5.9 or later
+- **Rich Destination Details & Interactive Maps:**
+  - Comprehensive view showcasing location historical background and operating schedules (`DestinationPage`).
+  - Embedded interactive MapKit view featuring coordinate markers for destination geography (`Map`, `Marker`).
+  - Toggleable bookmarking and action button to save or remove locations from trips.
 
-2.  **Clone the Repository:**
-    ```bash
-    git clone https://github.com/K1iff/WanderiOS.git
-    cd WanderiOS
-    ```
+- **Trip Itinerary Planning:**
+  - Day-by-day scheduled itinerary dashboard organized with date headers (`DayHeader`).
+  - Time-slotted attraction cards presenting thumbnail previews, spot names, and city tags (`ItineraryCard`).
 
-3.  **Open in Xcode:**
-    Open the `Wander.xcodeproj` file in Xcode.
+- **User Profile & Account Insights:**
+  - Visual profile dashboard displaying user badge, explorer title, and detailed info rows (`ProfileDetailRow`).
+  - Profile retrieval from Supabase `profiles` table matching authenticated UUIDs (`ProfilePage`).
 
-4.  **Configure Supabase (if necessary):**
-    The Supabase client is initialized in `Wander/App/SupabaseManager.swift`. If you are running this project with your own Supabase project, ensure the `supabaseURL` and `supabaseKey` are updated accordingly.
+- **Personalization & Travel Settings:**
+  - System-wide Dark Mode and Light Mode switching with `@AppStorage` persistence (`WanderApp`, `SettingPage`).
+  - Preference toggles for Push Notifications and Location Services (`AppPreferencesCard`).
+  - Travel customization for Distance Units (Imperial / Metric) and Default Currency (`PHP`, `USD`, `EUR`, `GBP`, `AUD`) (`TravelSettingsCard`).
 
-    ```swift
-    // Wander/App/SupabaseManager.swift
-    let supabase = SupabaseClient(
-        supabaseURL: URL(string: "YOUR_SUPABASE_URL")!,
-        supabaseKey: "YOUR_SUPABASE_KEY"
-    )
-    ```
+- **Interactive UI & Fluid Launch:**
+  - Animated branded splash screen with smooth logo scaling, opacity transitions, and automatic dismissal (`SplashScreenView`).
+  - Native bottom tab bar navigation bridging Explore, My Itinerary, and Settings (`TabViewNavigation`).
 
-5.  **Run the Application:**
-    Select your desired simulator or device and click the Run button in Xcode.
+---
 
-## 📝 How to Use
+## 3. Tech Stack
 
-1.  **Splash Screen:** Upon launching the app, you will see a splash screen with the WanderiOS logo and tagline.
+| Category | Technology / Library | Version / Requirement | Description |
+| :--- | :--- | :--- | :--- |
+| **Frontend / Native UI** | Swift | `5.9+` | Primary programming language |
+| **Frontend / Native UI** | SwiftUI | `3.0` (iOS 17+) | Declarative user interface framework |
+| **Frontend / Native UI** | MapKit | System Framework | Interactive destination mapping and marker rendering |
+| **Backend / API** | Supabase Swift SDK (`supabase-swift`) | `2.55.3` (>= `2.5.1`) | Backend-as-a-Service Swift client for Auth and Data |
+| **Backend / API** | Swift Concurrency Extras (`swift-concurrency-extras`) | `1.4.1` | Concurrency and async primitives for Swift |
+| **Backend / API** | Swift HTTP Types (`swift-http-types`) | `1.8.0` | Standard HTTP types and structures |
+| **Backend / API** | Swift Clocks (`swift-clocks`) | `1.1.1` | Clock scheduling utilities for asynchronous tasks |
+| **Database & Auth** | Supabase Auth (GoTrue) | Built into SDK | User registration, authentication, and session handling |
+| **Database & Auth** | Supabase Database (PostgreSQL) | Managed Cloud | Relational database (`destinations`, `profiles` tables) |
+| **Database & Auth** | Apple Swift Crypto (`swift-crypto`) | `4.5.2` | Cryptographic operations and token validations |
+| **Database & Auth** | Apple Swift ASN.1 (`swift-asn1`) | `1.7.3` | ASN.1 parser used for cryptographic payloads |
+| **Hosting & Tools** | Xcode | `15.0+` | Apple Integrated Development Environment |
+| **Hosting & Tools** | Swift Package Manager (SPM) | Swift 5.9+ | Native dependency management |
+| **Hosting & Tools** | macOS | `13.0+` (Ventura or later) | Development operating system requirement |
 
-2.  **Authentication:**
-    *   **Login:** Enter your email and password to log in. If you don't have an account, tap "Don't have an account? Create Now!".
-    *   **Sign Up:** Fill in your personal details and account information to create a new account.
+---
 
-3.  **Navigation:** The app uses a tab bar for primary navigation:
-    *   **Explore 🧭:** Discover various destinations in the Philippines. You can filter destinations by experience type.
-    *   **My Itinerary 🗓️:** View your planned trips and saved locations.
-    *   **Settings ⚙️:** Customize app preferences like dark mode and travel settings.
+## 4. Getting Started
 
-4.  **Exploring Destinations:**
-    *   Tap on a destination card in the "Explore" tab to view its details.
-    *   The destination detail page includes images, location, history, opening hours, and an interactive map.
-    *   You can save a destination to your itinerary from this page.
+### Prerequisites
 
-5.  **Profile:** Access your profile from the top right corner of the "Main Page" (after login). Here you can view your details and log out.
+Ensure you have the following installed on your machine:
+- **macOS:** version `13.0` (Ventura) or later
+- **Xcode:** version `15.0` or later
+- **Swift:** version `5.9` or later
+- **Active Supabase Account:** for backend database and authentication
 
-## 📂 Project Structure
+### Clone the Repository
+
+Clone the project from GitHub and navigate into the workspace directory:
+
+```bash
+git clone https://github.com/K1iff/WanderiOS.git
+cd WanderiOS
+```
+
+### Dependency Installation
+
+Dependencies are managed through Swift Package Manager (SPM) embedded within the Xcode project:
+
+1. Open `Wander.xcodeproj` in Xcode:
+   ```bash
+   open Wander.xcodeproj
+   ```
+2. Xcode will automatically resolve and download the required Swift packages defined in `Package.resolved` (including `supabase-swift`).
+3. To manually resolve or update packages via terminal or Xcode:
+   - In Xcode: Navigate to **File** > **Packages** > **Resolve Package Versions**.
+   - Via command line:
+     ```bash
+     xcodebuild -resolvePackageDependencies -project Wander.xcodeproj
+     ```
+
+### Local Server & Simulator Startup
+
+1. Launch Xcode and open `Wander.xcodeproj`.
+2. Select your target simulator (e.g., **iPhone 15 Pro** or **iPhone 16**) from the scheme dropdown at the top.
+3. Press `Cmd + R` or click the **Play** (Run) button to build and run the application in the iOS Simulator.
+
+---
+
+## 5. Environment Variables
+
+Supabase credentials are required to connect authentication and data services. Configure the connection parameters in `Wander/App/SupabaseManager.swift`:
+
+```env
+# Supabase Configuration Keys
+SUPABASE_URL=https://your-project-ref.supabase.co
+SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.your-anon-jwt-token-here
+```
+
+In the codebase, these parameters initialize the global Supabase client instance:
+
+```swift
+// Wander/App/SupabaseManager.swift
+import Foundation
+import Supabase
+
+let supabase = SupabaseClient(
+    supabaseURL: URL(string: "https://your-project-ref.supabase.co")!,
+    supabaseKey: "your-anon-jwt-token-here"
+)
+```
+
+> **Note:** For security in production, replace hardcoded values with configuration files or scheme-based build configurations that load securely at build time.
+
+---
+
+## 6. Project Structure
 
 ```
 WanderiOS/
-├── Wander/
-│   ├── App/
-│   │   ├── MyApp.swift         // Main App View Logic
-│   │   ├── SupabaseManager.swift // Supabase Client Configuration
-│   │   └── WanderApp.swift     // App Entry Point
-│   ├── Assets.xcassets/
-│   │   └── ...                 // App Assets
-│   ├── Components/
-│   │   ├── AppPreferencesCard.swift
-│   │   ├── DayHeader.swift
-│   │   ├── FilterExperience.swift
-│   │   ├── ItineraryCard.swift
-│   │   ├── ProfileDetailRow.swift
-│   │   ├── SpotCard.swift
-│   │   └── TravelSettingsCard.swift
-│   ├── Navigation/
-│   │   └── TabViewNavigation.swift // Tab Bar Navigation
-│   ├── Views/
-│   │   ├── Auth/
-│   │   │   ├── CreateAcctPage.swift
-│   │   │   └── LogInPage.swift
-│   │   ├── Explore/
-│   │   │   ├── DestinationPage.swift
-│   │   │   └── ExplorePage.swift
-│   │   ├── Itinerary/
-│   │   │   └── ItineraryPage.swift
-│   │   ├── Main/
-│   │   │   └── MainPage.swift
-│   │   ├── Profile/
-│   │   │   └── ProfilePage.swift
-│   │   └── Settings/
-│   │       └── SettingPage.swift
-│   └── Views/Splash/
-│       └── SplashScreenView.swift
-├── Wander.xcodeproj/
-│   └── ...                   // Xcode Project Configuration
-└── README.md
+├── README.md                                 # Project documentation
+├── Wander.xcodeproj/                         # Xcode project configuration
+│   ├── project.pbxproj                       # Build settings, targets, and file references
+│   └── project.xcworkspace/
+│       ├── contents.xcworkspacedata          # Workspace configuration
+│       └── xcshareddata/
+│           └── swiftpm/
+│               └── Package.resolved          # SPM pinned package dependencies
+└── Wander/                                   # Application source code
+    ├── ContentView.swift                     # Root view coordinator (splash, auth & main flow)
+    ├── App/                                  # App lifecycle & service configurations
+    │   ├── MyApp.swift                       # Navigation flow handler based on login state
+    │   ├── SupabaseManager.swift             # Supabase client initialization
+    │   └── WanderApp.swift                   # Main app entry point (@main)
+    ├── Assets.xcassets/                      # Graphic assets, icons, and colors
+    │   ├── AccentColor.colorset              # System accent color definitions
+    │   ├── AppIcon.appiconset                # Application icons
+    │   ├── bg4.imageset                      # Login background artwork
+    │   └── wander.imageset                   # Wander brand logo assets
+    ├── Components/                           # Modular reusable UI components
+    │   ├── AppPreferencesCard.swift          # Toggle setting card (notifications, dark mode)
+    │   ├── DayHeader.swift                   # Date and day header component for itinerary
+    │   ├── FilterExperience.swift            # Experience filter toggle button
+    │   ├── ItineraryCard.swift               # Time-stamped travel destination card
+    │   ├── ProfileDetailRow.swift            # Key-value row with SF Symbol icon
+    │   ├── SpotCard.swift                    # Destination image card with bookmark button
+    │   └── TravelSettingsCard.swift          # Picker settings for distance units and currency
+    ├── Navigation/                           # Navigation scaffolding
+    │   └── TabViewNavigation.swift           # Main bottom TabView (Explore, Itinerary, Settings)
+    └── Views/                                # Screen views grouped by feature module
+        ├── Auth/                             # Authentication views
+        │   ├── CreateAcctPage.swift          # Account registration form and profile creation
+        │   └── LogInPage.swift               # Login screen with credentials form
+        ├── Explore/                          # Destination discovery views
+        │   ├── DestinationPage.swift         # Destination detail page with MapKit map
+        │   └── ExplorePage.swift             # Destination feed with category filter sheet
+        ├── Itinerary/                        # Travel schedule views
+        │   └── ItineraryPage.swift           # Multi-day itinerary schedule view
+        ├── Main/                             # Main logged-in dashboard
+        │   └── MainPage.swift                # Main wrapper view hosting TabView and profile link
+        ├── Profile/                          # User account profile
+        │   └── ProfilePage.swift             # User profile screen, stats, and sign-out action
+        ├── Settings/                         # Application settings
+        │   └── SettingPage.swift             # Settings dashboard (app preferences & travel options)
+        └── Splash/                           # Onboarding and launch views
+            └── SplashScreenView.swift        # Animated launch screen view
 ```
 
-## 🤝 Contributing
+---
 
-Contributions are welcome! Please feel free to:
+## 7. Scripts & Testing
 
-*   Fork the repository.
-*   Create a new branch for your feature (`git checkout -b feature/AmazingFeature`).
-*   Commit your changes (`git commit -m 'Add some AmazingFeature'`).
-*   Push to the branch (`git push origin feature/AmazingFeature`).
-*   Open a Pull Request.
+Execute these terminal commands from the repository root for development, build, formatting, and testing workflows:
 
-Please ensure your code adheres to the existing style and includes relevant tests if applicable.
+### Resolve Dependencies
+```bash
+xcodebuild -resolvePackageDependencies -project Wander.xcodeproj
+```
 
-## 🔗 Important Links
+### Build for Development (Simulator)
+```bash
+xcodebuild build \
+  -project Wander.xcodeproj \
+  -scheme Wander \
+  -destination 'generic/platform=iOS Simulator' \
+  CODE_SIGNING_ALLOWED=NO
+```
 
-*   **Repository:** [https://github.com/K1iff/WanderiOS](https://github.com/K1iff/WanderiOS)
-*   **Supabase:** [https://supabase.com/](https://supabase.com/)
+### Build for Release / Archiving
+```bash
+xcodebuild archive \
+  -project Wander.xcodeproj \
+  -scheme Wander \
+  -archivePath ./build/Wander.xcarchive \
+  CODE_SIGNING_ALLOWED=NO
+```
+
+### Run Tests
+```bash
+xcodebuild test \
+  -project Wander.xcodeproj \
+  -scheme Wander \
+  -destination 'platform=iOS Simulator,name=iPhone 15 Pro,OS=latest'
+```
+
+### Linting & Formatting (Optional Tooling)
+```bash
+# If SwiftLint is installed (brew install swiftlint)
+swiftlint lint --path Wander
+
+# If swift-format is installed (brew install swift-format)
+swift-format lint --recursive Wander
+```
+
+### Clean Build Folder
+```bash
+xcodebuild clean -project Wander.xcodeproj -scheme Wander
+```
 
 ---
 
-> Built with ❤️ by K1iff
-> 
-> ⭐ [Star this repo](https://github.com/K1iff/WanderiOS)
-> 👍 [Like this project](https://github.com/K1iff/WanderiOS)
-> 🐛 [Report an issue](https://github.com/K1iff/WanderiOS/issues)
+## 8. License & Contact
 
+### License
+This project is licensed under the [MIT License](LICENSE) - see the LICENSE file for details.
+
+### Maintainer & Contact
+- **Creator / Maintainer:** [Ryzel Realon (K1iff)](https://github.com/K1iff)
+- **Repository:** [https://github.com/K1iff/WanderiOS](https://github.com/K1iff/WanderiOS)
+- **Issue Tracker:** [https://github.com/K1iff/WanderiOS/issues](https://github.com/K1iff/WanderiOS/issues)
+- **Supabase Documentation:** [https://supabase.com/docs](https://supabase.com/docs)
 
 ---
-**<p align="center">Generated by [ReadmeCodeGen](https://www.readmecodegen.com/)</p>**
+
+> Built with ❤️ by [K1iff](https://github.com/K1iff)
+>
+> ⭐ [Star this repo](https://github.com/K1iff/WanderiOS) &nbsp;|&nbsp; 👍 [Like this project](https://github.com/K1iff/WanderiOS) &nbsp;|&nbsp; 🐛 [Report an issue](https://github.com/K1iff/WanderiOS/issues)
