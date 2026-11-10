@@ -8,20 +8,9 @@
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
 A modern Swift-based mobile application crafted with SwiftUI and Supabase to discover, explore, and plan travel itineraries across breathtaking destinations in the Philippines.
-
-```
-+-------------------------------------------------------------------------+
-|                                                                         |
-|                       [ App Screenshot / Demo UI ]                      |
-|                                                                         |
-|            Explore Destinations  *  Interactive Maps  *  Itinerary       |
-|                                                                         |
-+-------------------------------------------------------------------------+
-```
-
 ---
 
-## 2. Key Features
+## 1. Key Features
 
 - **User Authentication & Session Management:**
   - Secure account registration with full name, birthdate, sex, location, email, and password via Supabase Auth (`CreateAcctPage`).
@@ -57,7 +46,7 @@ A modern Swift-based mobile application crafted with SwiftUI and Supabase to dis
 
 ---
 
-## 3. Tech Stack
+## 2. Tech Stack
 
 | Category | Technology / Library | Version / Requirement | Description |
 | :--- | :--- | :--- | :--- |
@@ -78,7 +67,7 @@ A modern Swift-based mobile application crafted with SwiftUI and Supabase to dis
 
 ---
 
-## 4. Getting Started
+## 3. Getting Started
 
 ### Prerequisites
 
@@ -121,34 +110,7 @@ Dependencies are managed through Swift Package Manager (SPM) embedded within the
 
 ---
 
-## 5. Environment Variables
-
-Supabase credentials are required to connect authentication and data services. Configure the connection parameters in `Wander/App/SupabaseManager.swift`:
-
-```env
-# Supabase Configuration Keys
-SUPABASE_URL=https://your-project-ref.supabase.co
-SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.your-anon-jwt-token-here
-```
-
-In the codebase, these parameters initialize the global Supabase client instance:
-
-```swift
-// Wander/App/SupabaseManager.swift
-import Foundation
-import Supabase
-
-let supabase = SupabaseClient(
-    supabaseURL: URL(string: "https://your-project-ref.supabase.co")!,
-    supabaseKey: "your-anon-jwt-token-here"
-)
-```
-
-> **Note:** For security in production, replace hardcoded values with configuration files or scheme-based build configurations that load securely at build time.
-
----
-
-## 6. Project Structure
+## 4. Project Structure
 
 ```
 WanderiOS/
@@ -202,7 +164,7 @@ WanderiOS/
 
 ---
 
-## 7. Scripts & Testing
+## 5. Scripts & Testing
 
 Execute these terminal commands from the repository root for development, build, formatting, and testing workflows:
 
@@ -252,11 +214,6 @@ xcodebuild clean -project Wander.xcodeproj -scheme Wander
 ```
 
 ---
-
-## 8. License & Contact
-
-### License
-This project is licensed under the [MIT License](LICENSE) - see the LICENSE file for details.
 
 ### Maintainer & Contact
 - **Creator / Maintainer:** [Ryzel Realon (K1iff)](https://github.com/K1iff)
